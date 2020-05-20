@@ -1,11 +1,21 @@
 package com.fer.redis_cache.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "MqttSubscribe")
 public class MqttSubscribeModel {
+
+    @Id
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "SEQ_USER", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private Integer id_seq;
 
     private Integer id;
 
@@ -31,6 +41,13 @@ public class MqttSubscribeModel {
 
     //Getters y Setters
 
+    public Integer getId_seq() {
+        return id_seq;
+    }
+
+    public void setId_seq(Integer id_seq) {
+        this.id_seq = id_seq;
+    }
 
     public Integer getId() {
         return id;
@@ -40,12 +57,13 @@ public class MqttSubscribeModel {
         this.id = id;
     }
 
+    @PrePersist
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setLocalDateTime() {
+        this.localDateTime = LocalDateTime.now();
     }
 
     public String getTopic() {

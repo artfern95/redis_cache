@@ -3,15 +3,21 @@ package com.fer.redis_cache.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "MqttPublish")
 public class MqttPublishModel {
 
-    @NotNull
+    @Id
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "SEQ_USER", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private Integer id;
+
     private String topic;
 
-    @NotNull
     private String message;
     private Boolean retained;
     private Integer QoS = 0;
@@ -40,6 +46,14 @@ public class MqttPublishModel {
     }
 
     //Getters y Setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTopic() {
         return topic;
@@ -73,12 +87,13 @@ public class MqttPublishModel {
         QoS = qoS;
     }
 
+    @PrePersist
     public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
+    public void setFecha() {
+        this.fecha = LocalDateTime.now();
     }
 
     @Override
